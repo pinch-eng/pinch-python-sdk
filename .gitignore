@@ -1,0 +1,17 @@
+.env
+
+# Virtualenv
+.venv/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Local outputs / artifacts
+results/
+examples/output.*
+output.wav
+# OS
+.DS_Store
+__MACOSX/
