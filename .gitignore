@@ -15,3 +15,5 @@ output.wav
 # OS
 .DS_Store
 __MACOSX/
+
+uv.lock

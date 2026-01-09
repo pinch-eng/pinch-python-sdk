@@ -30,7 +30,7 @@ class PinchClient:
                 "HTTP dependencies are missing. Install the 'httpx' package to continue."
             ) from e
 
-        url = f"{self._api_base_url}/api/voice-translation-demo/connect"
+        url = f"{self._api_base_url}/api/beta1/session"
         headers = {
             "Authorization": f"Bearer {self._api_key}",
             "Content-Type": "application/json",
