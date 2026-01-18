@@ -2,7 +2,7 @@
 
 ### Requirements
 
-- Python **3.9+**
+- Python **3.10+**
 - A Pinch API key in `PINCH_API_KEY`
 
 ### Authentication (`PINCH_API_KEY`)
