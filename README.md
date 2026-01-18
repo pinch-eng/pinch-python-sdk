@@ -12,11 +12,6 @@ The SDK reads the API key from:
 1) `PINCH_API_KEY` environment variable (recommended)
 2) A local `.env` file in your current working directory (optional)
 
-Important:
-
-- `export PINCH_API_KEY="..."` **does not create** a `.env` file.
-- It only sets the variable for the current terminal session (closing the terminal clears it).
-
 Example `.env` file (optional):
 
 ```env
@@ -37,7 +32,7 @@ In a uv-managed project:
 uv add pinch
 ```
 
-### Library usage (production)
+### Library usage
 
 Create a small script (for example `translate.py`) in your own project:
 
