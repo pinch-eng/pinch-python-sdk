@@ -7,7 +7,7 @@ name = "pinch"
 version = "0.1.0"
 description = "Pinch Python SDK for real-time speech translation"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [{ name = "Pinch" }]
 keywords = ["pinch", "speech", "translation", "realtime"]
@@ -16,6 +16,7 @@ classifiers = [
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -31,15 +32,9 @@ audio = [
   "numpy>=1.24.0",
   "soxr>=0.3.7",
 ]
-mic = [
-  "sounddevice>=0.4.6",
-]
 dev = [
   "pytest>=7.4.0",
 ]
-
-[project.scripts]
-pinch = "pinch.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["pinch"]

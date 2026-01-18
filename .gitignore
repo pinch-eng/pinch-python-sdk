@@ -11,6 +11,7 @@ __pycache__/
 # Local outputs / artifacts
 results/
 examples/output.*
+examples/transcript.txt
 output.wav
 # OS
 .DS_Store

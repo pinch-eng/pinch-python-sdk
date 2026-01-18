@@ -2,8 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
-from dataclasses import dataclass
-from typing import Any, AsyncIterator, Callable
+from typing import Any, AsyncIterator, Optional
 
 from .errors import PinchConfigError, PinchProtocolError
 from .events import AudioEvent, ErrorEvent, PinchEvent, SessionEnded, SessionStarted, TranscriptEvent
@@ -13,7 +12,7 @@ def _safe_err(msg: str) -> ErrorEvent:
     return ErrorEvent(message=msg)
 
 
-def _parse_transcript_payload(payload: Any) -> TranscriptEvent | None:
+def _parse_transcript_payload(payload: Any) -> Optional[TranscriptEvent]:
     if not isinstance(payload, dict):
         return None
     t = payload.get("type")
@@ -53,7 +52,7 @@ class PinchStream:
         self._connected = False
         self._selected_remote_audio_track = None
         self._audio_candidates: list[tuple[Any, Any, Any]] = []
-        self._audio_fallback_task: asyncio.Task[None] | None = None
+        self._audio_fallback_task: Optional[asyncio.Task[None]] = None
 
     async def connect(self) -> None:
         if self._connected:
@@ -81,15 +80,10 @@ class PinchStream:
         self._connected = True
         await self._events.put(SessionStarted())
 
-        # Prepare an input audio track (user may or may not send frames).
-        try:
-            self._audio_source = rtc.AudioSource(sample_rate=16000, num_channels=1)
-            self._local_track = rtc.LocalAudioTrack.create_audio_track("input-audio", self._audio_source)
-            await self._room.local_participant.publish_track(self._local_track)
-        except Exception:
-            # If publish fails, transcripts can still work.
-            self._audio_source = None
-            self._local_track = None
+        # Input audio track is created lazily on first send_pcm16() so we can match
+        # the actual input sample rate (e.g., 16kHz or 48kHz).
+        self._audio_source = None
+        self._local_track = None
 
     async def aclose(self) -> None:
         if self._closed:
@@ -132,13 +126,26 @@ class PinchStream:
             raise PinchProtocolError(
                 "Unsupported input sample rate. Please provide 16000 Hz (recommended) or 48000 Hz audio."
             )
-        if self._audio_source is None:
-            return
 
         try:
             from livekit import rtc  # type: ignore
         except Exception:  # pragma: no cover
             return
+
+        # Lazily create the input audio source/track so the AudioSource matches the
+        # sample rate of the frames we send (LiveKit requires this).
+        if self._audio_source is None or self._local_track is None:
+            try:
+                if self._room is None or not self._connected:
+                    return
+                self._audio_source = rtc.AudioSource(sample_rate=sample_rate, num_channels=channels)
+                self._local_track = rtc.LocalAudioTrack.create_audio_track("input-audio", self._audio_source)
+                await self._room.local_participant.publish_track(self._local_track)
+            except Exception:
+                # If publish fails, transcripts can still work.
+                self._audio_source = None
+                self._local_track = None
+                return
 
         # LiveKit expects PCM16 samples. Convert bytes -> AudioFrame.
         samples_per_channel = len(pcm16_bytes) // 2

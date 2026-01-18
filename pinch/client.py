@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import os
+from typing import Optional
 
 from .config import resolve_api_key
 from .errors import PinchConfigError, PinchNetworkError, PinchValidationError, map_http_error
@@ -11,7 +11,7 @@ from .stream import PinchStream
 class PinchClient:
     def __init__(
         self,
-        api_key: str | None = None,
+        api_key: Optional[str] = None,
         api_base_url: str = "https://api.startpinch.com",
         timeout_s: float = 30.0,
     ) -> None:
@@ -19,7 +19,7 @@ class PinchClient:
         self._api_base_url = api_base_url.rstrip("/")
         self._timeout_s = float(timeout_s)
 
-    def create_session(self, params: SessionParams | None = None) -> SessionInfo:
+    def create_session(self, params: Optional[SessionParams] = None) -> SessionInfo:
         params = params or SessionParams()
         params.validate()
 
@@ -43,7 +43,7 @@ class PinchClient:
 
         try:
             with httpx.Client(timeout=self._timeout_s) as client:
-                def _post(req_body: dict) -> tuple["httpx.Response", object | None]:
+                def _post(req_body: dict) -> tuple["httpx.Response", Optional[object]]:
                     r = client.post(url, headers=headers, json=req_body)
                     try:
                         return r, r.json()

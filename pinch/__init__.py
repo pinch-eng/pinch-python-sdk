@@ -11,6 +11,7 @@ from .errors import (
     PinchValidationError,
 )
 from .events import AudioEvent, ErrorEvent, SessionEnded, SessionStarted, TranscriptEvent
+from .file_translate import FileTranslateResult, translate_file
 from .session import SessionInfo, SessionParams
 
 try:
@@ -25,6 +26,8 @@ __all__ = [
     "PinchClient",
     "SessionParams",
     "SessionInfo",
+    "translate_file",
+    "FileTranslateResult",
     "TranscriptEvent",
     "AudioEvent",
     "ErrorEvent",

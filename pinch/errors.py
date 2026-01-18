@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any
+from typing import Any, Optional
 
 
 class PinchError(Exception):
@@ -40,19 +39,12 @@ class PinchProtocolError(PinchError):
     """Unexpected response/event shapes."""
 
 
-@dataclass(frozen=True)
-class HttpErrorDetails:
-    status_code: int
-    message: str
-    raw: dict[str, Any] | None = None
-
-
-def map_http_error(status_code: int, payload: Any | None) -> PinchError:
+def map_http_error(status_code: int, payload: Optional[Any]) -> PinchError:
     """
     Map HTTP status codes to SDK exception types with safe, user-friendly messages.
     Never mention internal transport/session architecture terms.
     """
-    raw: dict[str, Any] | None = payload if isinstance(payload, dict) else None
+    raw: Optional[dict[str, Any]] = payload if isinstance(payload, dict) else None
 
     if status_code == 401:
         return PinchAuthError("Authentication failed. Check your PINCH_API_KEY in the Pinch Portal.")

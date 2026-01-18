@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Literal
+from typing import Any, Literal, Optional, Union
 
 
 @dataclass(frozen=True)
@@ -19,8 +19,8 @@ class TranscriptEvent:
     type: Literal["transcript"] = "transcript"
     kind: Literal["original", "translated"] = "original"
     text: str = ""
-    is_final: bool | None = None
-    raw: dict[str, Any] | None = None
+    is_final: Optional[bool] = None
+    raw: Optional[dict[str, Any]] = None
 
 
 @dataclass(frozen=True)
@@ -35,10 +35,10 @@ class AudioEvent:
 class ErrorEvent:
     type: Literal["error"] = "error"
     message: str = ""
-    code: str | None = None
-    raw: dict[str, Any] | None = None
+    code: Optional[str] = None
+    raw: Optional[dict[str, Any]] = None
 
 
-PinchEvent = SessionStarted | SessionEnded | TranscriptEvent | AudioEvent | ErrorEvent
+PinchEvent = Union[SessionStarted, SessionEnded, TranscriptEvent, AudioEvent, ErrorEvent]
 
 

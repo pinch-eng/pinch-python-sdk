@@ -2,16 +2,11 @@ from __future__ import annotations
 
 import os
 import sys
-from dataclasses import dataclass
 from getpass import getpass
 from pathlib import Path
+from typing import Optional
 
 from .errors import PinchConfigError
-
-
-@dataclass(frozen=True)
-class PinchConfig:
-    api_key: str
 
 
 def _is_interactive() -> bool:
@@ -21,14 +16,14 @@ def _is_interactive() -> bool:
         return False
 
 
-def load_api_key_from_env() -> str | None:
+def load_api_key_from_env() -> Optional[str]:
     key = os.getenv("PINCH_API_KEY")
     if key:
         return key.strip() or None
     return None
 
 
-def load_api_key_from_dotenv(*, directory: Path | None = None) -> str | None:
+def load_api_key_from_dotenv(*, directory: Optional[Path] = None) -> Optional[str]:
     """
     Load PINCH_API_KEY from a local .env file in the current working directory.
     This avoids re-prompting on every CLI run after the user has saved a key.
@@ -55,7 +50,7 @@ def load_api_key_from_dotenv(*, directory: Path | None = None) -> str | None:
     return None
 
 
-def write_dotenv_api_key(api_key: str, *, directory: Path | None = None) -> Path:
+def write_dotenv_api_key(api_key: str, *, directory: Optional[Path] = None) -> Path:
     directory = directory or Path.cwd()
     path = directory / ".env"
     # Only write exactly the required key.
@@ -64,12 +59,12 @@ def write_dotenv_api_key(api_key: str, *, directory: Path | None = None) -> Path
 
 
 def resolve_api_key(
-    api_key: str | None = None,
+    api_key: Optional[str] = None,
     *,
     prompt_if_missing: bool = True,
     offer_write_dotenv: bool = True,
-    directory: Path | None = None,
-    interactive: bool | None = None,
+    directory: Optional[Path] = None,
+    interactive: Optional[bool] = None,
 ) -> str:
     if api_key and api_key.strip():
         return api_key.strip()

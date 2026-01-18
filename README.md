@@ -2,67 +2,71 @@
 
 ### Install
 
-From this repo:
-
 ```bash
-pip install -e .
+python3 -m pip install pinch
 ```
 
-Optional extras:
+Python requirement: **Python 3.9+**
 
-```bash
-pip install -e ".[mic]"      # microphone capture + audio playback
-pip install -e ".[audio]"    # resampling (for non-16k/48k input WAVs)
-```
+### Library usage (production)
 
-### Configure
-
-Run in your project directory:
-
-```bash
-pinch configure
-```
-
-This writes a local `.env` file containing only:
-
-- `PINCH_API_KEY=...`
-
-### File demo
-
-1) Put a WAV file at `examples/input.wav`
-
-2) Run:
-
-```bash
-pinch translate --in examples/input.wav --out examples/output.wav --source en-US --target es-ES
-```
-
-Notes:
-- This will write translated audio to `--out` and also write a transcript file next to it (same name, `.txt`).
-- If you omit `--out`, outputs are written to `./results/output.wav` and `./results/output.txt`
-- For transcript-only runs (no output WAV), use `--no-audio`. In this mode, `--out` is treated as the transcript path:
-
-```bash
-pinch translate --in examples/input.wav --no-audio --out examples/output.txt --source en-US --target es-ES
-```
-
-### SDK usage
+After installing, create a small script (for example `translate.py`) that imports the SDK:
 
 ```python
 import asyncio
-from pinch import PinchClient, SessionParams
+from pinch import translate_file
 
-async def main():
-    client = PinchClient()  # loads PINCH_API_KEY or prompts if interactive
-    session = client.create_session(SessionParams(source_language="en-US", target_language="es-ES"))
-    stream = await client.connect_stream(session, audio_output_enabled=True)
-    async with stream:
-        async for event in stream.events():
-            if event.type == "transcript" and event.text:
-                prefix = "ORIG" if event.kind == "original" else "TRAN"
-                print(f"{prefix}: {event.text}")
+async def main() -> None:
+    await translate_file(
+        input_wav_path="input.wav",
+        output_wav_path="output.wav",
+        transcript_path="transcript.txt",
+        # defaults:
+        # source_language="en-US"
+        # target_language="es-ES"
+        # audio_output_enabled=True
+        # voiceType is always "clone"
+    )
 
 asyncio.run(main())
 ```
 
+Run it:
 
+```bash
+export PINCH_API_KEY="..."
+python3 translate.py
+```
+
+This writes:
+
+- `output.wav`
+- `transcript.txt`
+
+Input audio notes:
+
+- Input WAV must be **16-bit PCM**.
+- Sample rates supported out of the box: **16000 Hz** and **48000 Hz**.
+- Other sample rates require installing optional resampling deps: `pip install "pinch[audio]"`.
+
+### Repo example script (for this git checkout)
+
+```bash
+python3 -m pip install -e .
+export PINCH_API_KEY="..."
+python3 examples/translate.py
+```
+
+This writes:
+
+- `examples/output.wav`
+- `examples/transcript.txt`
+
+Notes:
+
+- The example reads `examples/input.wav` by default.
+- `voiceType` is always `"clone"` in the example script.
+
+### SDK usage (imports)
+
+Use `PinchClient`, `SessionParams`, and `PinchStream` from the `pinch` package, or call the helper in `pinch.file_translate`.
