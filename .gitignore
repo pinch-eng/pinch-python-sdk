@@ -1,20 +1,52 @@
-.env
-
-# Virtualenv
-.venv/
-
-# Python caches
+# Python
 __pycache__/
 *.py[cod]
-*.pyo
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+*.egg
 
-# Local outputs / artifacts
-results/
-examples/output.*
-examples/transcript.txt
-output.wav
-# OS
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
 .DS_Store
-__MACOSX/
 
-uv.lock
+# Environment / secrets
+.env
+.env.local
+*.pem
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Generated outputs (examples)
+examples/output.wav
+examples/transcript.txt
+
+# Build artifacts
+*.whl

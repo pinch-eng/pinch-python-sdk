@@ -3,14 +3,14 @@ requires = ["hatchling>=1.21.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pinch"
+name = "pinch-sdk"
 version = "0.1.0"
 description = "Pinch Python SDK for real-time speech translation"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Pinch" }]
-keywords = ["pinch", "speech", "translation", "realtime"]
+keywords = ["pinch", "speech", "translation", "realtime", "voice", "audio", "tts", "stt"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
@@ -26,13 +26,18 @@ dependencies = [
   "livekit>=0.12.0",
 ]
 
+[project.urls]
+Homepage = "https://startpinch.com"
+Repository = "https://github.com/pinch/pinch-python"
+Documentation = "https://github.com/pinch/pinch-python#readme"
+
 [project.optional-dependencies]
 audio = [
   "numpy>=1.24.0",
   "soxr>=0.3.7",
 ]
 dev = [
-  "pytest>=7.4.0",
+  "pytest>=8.0.0",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -40,10 +45,5 @@ packages = ["pinch"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-
-[dependency-groups]
-dev = [
-    "pytest>=9.0.2",
-]
 
 
