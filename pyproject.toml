@@ -28,8 +28,8 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://startpinch.com"
-Repository = "https://github.com/pinch/pinch-python"
-Documentation = "https://github.com/pinch/pinch-python#readme"
+Repository = "https://github.com/pinch-eng/pinch-python-sdk"
+Documentation = "https://github.com/pinch-eng/pinch-python-sdk#readme"
 
 [project.optional-dependencies]
 audio = [

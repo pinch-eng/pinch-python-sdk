@@ -5,8 +5,8 @@ Thanks for your interest in contributing!
 ## Development Setup
 
 ```bash
-git clone https://github.com/pinch/pinch-python.git
-cd pinch-python
+git clone https://github.com/pinch-eng/pinch-python-sdk.git
+cd pinch-python-sdk
 pip install -e ".[dev]"
 ```
 

@@ -10,8 +10,8 @@ Real-time speech translation.
 ## Quick Start (uv recommended)
 
 ```bash
-git clone https://github.com/pinch/pinch-python.git
-cd pinch-python
+git clone https://github.com/pinch-eng/pinch-python-sdk.git
+cd pinch-python-sdk
 export PINCH_API_KEY="your_key_here"
 uv run python examples/translate.py
 ```
