@@ -49,7 +49,7 @@ def _require_soxr() -> tuple[object, object]:
     except Exception as e:
         raise PinchProtocolError(
             "Unsupported input sample rate. Supported: 16000 Hz or 48000 Hz WAV. "
-            "For other sample rates, install resampling deps with: pip install \"pinch[audio]\""
+            "For other sample rates, install resampling deps with: pip install \"pinch-sdk[audio]\""
         ) from e
 
 

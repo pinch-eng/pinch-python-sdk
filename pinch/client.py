@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Optional
+from pathlib import Path
+from typing import Optional, Union
 
 from .config import resolve_api_key
 from .errors import PinchConfigError, PinchNetworkError, PinchValidationError, map_http_error
@@ -78,5 +79,35 @@ class PinchClient:
         stream = PinchStream(session=session, audio_output_enabled=audio_output_enabled)
         await stream.connect()
         return stream
+
+    async def translate_file(
+        self,
+        *,
+        input_wav_path: Union[str, Path],
+        output_wav_path: Union[str, Path],
+        transcript_path: Union[str, Path],
+        source_language: str = "en-US",
+        target_language: str = "es-ES",
+        audio_output_enabled: bool = True,
+    ) -> "FileTranslateResult":
+        """
+        Convenience wrapper: translate a WAV file and write outputs.
+
+        This delegates to the existing top-level file helper (which performs streaming internally).
+        """
+        # Import lazily to avoid circular imports.
+        from .file_translate import translate_file as _translate_file
+
+        return await _translate_file(
+            input_wav_path=input_wav_path,
+            output_wav_path=output_wav_path,
+            transcript_path=transcript_path,
+            source_language=source_language,
+            target_language=target_language,
+            audio_output_enabled=audio_output_enabled,
+            api_key=self._api_key,
+            api_base_url=self._api_base_url,
+            timeout_s=self._timeout_s,
+        )
 
 

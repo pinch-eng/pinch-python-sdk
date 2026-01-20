@@ -17,9 +17,11 @@ from .session import SessionInfo, SessionParams
 try:
     from importlib.metadata import version as _pkg_version
 
+try:
     __version__ = _pkg_version("pinch-sdk")
-except Exception:  # pragma: no cover
-    __version__ = "0.1.0"
+except Exception:
+    __version__ = "0.1.1"
+
 
 __all__ = [
     "__version__",

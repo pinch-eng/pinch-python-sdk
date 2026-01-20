@@ -1,71 +1,122 @@
-# Pinch Python SDK
+## Pinch Python SDK
 
-Real-time speech translation.
-
-## Requirements
+### Requirements
 
 - Python **3.10+**
-- A Pinch API key ([get one here](https://startpinch.com))
+- A Pinch API key in `PINCH_API_KEY`
+  - Docs: `https://www.startpinch.com/docs`
+  - Create/manage API keys (Portal): `https://portal.startpinch.com/dashboard/developers`
 
-## Quick Start (uv recommended)
+### Authentication (`PINCH_API_KEY`)
 
-```bash
-git clone https://github.com/pinch-eng/pinch-python-sdk.git
-cd pinch-python-sdk
-export PINCH_API_KEY="your_key_here"
-uv run python examples/translate.py
+The SDK reads the API key from:
+
+1) `PINCH_API_KEY` environment variable (recommended)
+2) A local `.env` file in your current working directory (optional)
+
+Example `.env` file (optional):
+
+```env
+PINCH_API_KEY=your_key_here
 ```
 
-## Install from PyPI
+### Install (pip)
 
 ```bash
-pip install pinch-sdk
+python3 -m pip install pinch-sdk
 ```
 
-Or with uv:
+Optional (only needed for WAV resampling support for non-16k/48k inputs):
+
+```bash
+python3 -m pip install "pinch-sdk[audio]"
+```
+
+### Install (uv)
+
+In a uv-managed project:
 
 ```bash
 uv add pinch-sdk
 ```
 
-## Usage
+### Usage
+
+Create a small script (for example `translate.py`) in your own project:
 
 ```python
 import asyncio
-from pinch import translate_file
 
-async def main():
-    await translate_file(
+from pinch import PinchClient
+
+async def main() -> None:
+    client = PinchClient()  # reads PINCH_API_KEY
+
+    await client.translate_file(
         input_wav_path="input.wav",
         output_wav_path="output.wav",
         transcript_path="transcript.txt",
-        # source_language="en-US",  # default
-        # target_language="es-ES",  # default
+        # defaults:
+        # source_language="en-US"
+        # target_language="es-ES"
+        # audio_output_enabled=True
     )
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
-## API Key
-
-Set `PINCH_API_KEY` as an environment variable:
+Run (pip environment):
 
 ```bash
-export PINCH_API_KEY="your_key_here"
+export PINCH_API_KEY="..."
+python3 translate.py
 ```
 
-Or create a `.env` file in your project directory:
+Run (uv environment):
 
-```
-PINCH_API_KEY=your_key_here
+```bash
+export PINCH_API_KEY="..."
+uv run python translate.py
 ```
 
-## Audio Requirements
+Outputs:
+
+- `output.wav` (if `audio_output_enabled=True`)
+- `transcript.txt`
+
+### Input audio notes
 
 - Input must be **16-bit PCM WAV**
-- Supported sample rates: **16000 Hz** and **48000 Hz**
-- Other sample rates require: `pip install "pinch-sdk[audio]"`
+- Streaming API supports sample rates: **16000 Hz** (recommended) and **48000 Hz**
+- WAV helpers support **16000 Hz** and **48000 Hz** out of the box
+- Other sample rates require resampling deps: `python3 -m pip install "pinch-sdk[audio]"`
 
-## License
+### Repo example (for this git checkout)
 
-MIT
+This repository includes an example script and a default input WAV.
+
+Run with pip:
+
+```bash
+python3 -m pip install -e .
+export PINCH_API_KEY="..."
+python3 examples/translate.py
+```
+
+Run with uv:
+
+```bash
+uv sync
+export PINCH_API_KEY="..."
+uv run python examples/translate.py
+```
+
+Outputs (generated):
+
+- `examples/output.wav`
+- `examples/transcript.txt`
+
+Notes:
+- The example reads `examples/input.wav` by default.
+- The example does not print transcripts to stdout; it only writes `examples/transcript.txt`.
