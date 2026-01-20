@@ -14,8 +14,7 @@ from .events import AudioEvent, ErrorEvent, SessionEnded, SessionStarted, Transc
 from .file_translate import FileTranslateResult, translate_file
 from .session import SessionInfo, SessionParams
 
-try:
-    from importlib.metadata import version as _pkg_version
+from importlib.metadata import version as _pkg_version
 
 try:
     __version__ = _pkg_version("pinch-sdk")
