@@ -48,5 +48,8 @@ htmlcov/
 examples/output.wav
 examples/transcript.txt
 
+# Node (real-time demo app)
+node_modules/
+
 # Build artifacts
 *.whl
