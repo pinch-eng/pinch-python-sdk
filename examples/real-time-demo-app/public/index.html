@@ -9,21 +9,27 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: linear-gradient(135deg, #f0f1f3 0%, #e8eaef 100%);
-      color: #1a1a2e;
-      min-height: 100vh;
+      background: #0f0f13;
+      color: #e4e4e7;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    header {
+    .app {
       width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: 0 20px;
+    }
+
+    /* ---- Header ---- */
+    header {
       text-align: center;
-      padding: 28px 16px 20px;
-      background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
-      border-bottom: 1px solid #e2e4e9;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      padding: 28px 0 0;
     }
 
     .logo-title {
@@ -34,107 +40,131 @@
       margin-bottom: 6px;
     }
 
-    .logo-title img { width: 36px; height: 36px; }
+    .logo-title img { width: 28px; height: 28px; }
 
     header h1 {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1a1a2e;
+      font-size: 17px;
+      font-weight: 600;
+      color: #e4e4e7;
       letter-spacing: -0.01em;
     }
 
     .subtitle {
       font-size: 12px;
-      color: #9ca3af;
-      margin-bottom: 16px;
+      color: #52525b;
+      margin-top: 4px;
       letter-spacing: 0.02em;
     }
 
+    /* ---- Timer ---- */
     #timer {
-      font-size: 36px;
-      font-weight: 700;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
       font-variant-numeric: tabular-nums;
-      color: #333;
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
+      color: #71717a;
+      margin-top: 20px;
+      letter-spacing: 0.08em;
     }
 
+    #timer.active { color: #a1a1aa; }
+
+    /* ---- Waveform ---- */
+    .waveform-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 16px 0;
+      height: 64px;
+      position: relative;
+    }
+
+    #waveCanvas {
+      width: 100%;
+      max-width: 480px;
+      height: 64px;
+      border-radius: 12px;
+    }
+
+    .waveform-idle {
+      font-size: 12px;
+      color: #3f3f46;
+      text-align: center;
+      position: absolute;
+      letter-spacing: 0.04em;
+    }
+
+    /* ---- Controls ---- */
     .controls {
       display: flex;
       gap: 10px;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
+      margin-bottom: 20px;
+      position: relative;
     }
 
     button {
-      padding: 10px 26px;
+      padding: 10px 28px;
       border: none;
       border-radius: 10px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: all 0.15s ease;
+      letter-spacing: 0.01em;
     }
 
-    button:active { transform: scale(0.97); }
-    button:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+    button:active { transform: scale(0.96); }
+    button:disabled { opacity: 0.25; cursor: not-allowed; transform: none; }
 
-    #connectBtn { background: #374151; color: #fff; }
-    #connectBtn:hover:not(:disabled) { background: #1f2937; box-shadow: 0 2px 8px rgba(55,65,81,0.3); }
+    #connectBtn {
+      background: #e4e4e7;
+      color: #18181b;
+    }
+    #connectBtn:hover:not(:disabled) { background: #fff; }
 
-    #disconnectBtn { background: #6b7280; color: #fff; }
-    #disconnectBtn:hover:not(:disabled) { background: #4b5563; box-shadow: 0 2px 8px rgba(107,114,128,0.3); }
+    #disconnectBtn {
+      background: #27272a;
+      color: #a1a1aa;
+      border: 1px solid #3f3f46;
+    }
+    #disconnectBtn:hover:not(:disabled) { background: #3f3f46; color: #e4e4e7; }
 
     #audioToggle {
-      background: #e5e7eb; color: #374151;
-      padding: 10px 20px; border: 1px solid #d1d5db;
+      background: transparent;
+      color: #71717a;
+      padding: 10px 20px;
+      border: 1px solid #3f3f46;
     }
-    #audioToggle:hover:not(:disabled) { background: #d1d5db; }
-    #audioToggle.active { background: #4b5563; color: #fff; border-color: #4b5563; }
-    #audioToggle.active:hover:not(:disabled) { background: #374151; box-shadow: 0 2px 8px rgba(75,85,99,0.3); }
+    #audioToggle:hover:not(:disabled) { border-color: #52525b; color: #a1a1aa; }
+    #audioToggle.active {
+      background: #27272a;
+      color: #e4e4e7;
+      border-color: #52525b;
+    }
 
     #status {
-      font-size: 13px;
-      color: #9ca3af;
-      min-width: 80px;
-      font-weight: 500;
+      font-size: 12px;
+      color: #52525b;
+      letter-spacing: 0.02em;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
-    #status.connected { color: #374151; font-weight: 600; }
-    #status.error { color: #991b1b; }
-
-    /* ---- Waveform ---- */
-    .waveform-section {
-      width: 100%;
-      max-width: 900px;
-      padding: 20px 16px 8px;
-    }
-
-    #waveformCanvas {
-      width: 100%;
-      height: 64px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.6);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      display: block;
-    }
+    #status.connected { color: #4ade80; }
+    #status.error { color: #f87171; }
 
     /* ---- Transcript panels ---- */
-    .main-content {
-      width: 100%;
-      max-width: 900px;
-      padding: 0 16px 24px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
     .transcript-container {
       flex: 1;
       display: flex;
       gap: 12px;
+      overflow: hidden;
       min-height: 0;
+      margin-bottom: 20px;
     }
 
     .transcript-panel {
@@ -143,91 +173,101 @@
       flex-direction: column;
       border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      max-height: 420px;
+      border: 1px solid #27272a;
     }
 
-    .transcript-panel.original { background: #4f89b7; }
-    .transcript-panel.translated { background: #bdc1ed; }
+    .transcript-panel.original { background: #18181b; }
+    .transcript-panel.translated { background: #1c1c22; }
 
     .panel-header {
-      padding: 12px 18px;
+      padding: 12px 16px;
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .original .panel-header {
-      color: rgba(255,255,255,0.75);
-      border-bottom: 1px solid rgba(255,255,255,0.12);
+      color: #6d9fc5;
+      border-bottom: 1px solid #27272a;
     }
 
     .translated .panel-header {
-      color: rgba(75,85,99,0.7);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      color: #9b9ed4;
+      border-bottom: 1px solid #27272a;
     }
+
+    .header-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .original .header-dot { background: #4f89b7; }
+    .translated .header-dot { background: #8b8fd0; }
 
     .panel-body {
       flex: 1;
       overflow-y: auto;
-      padding: 14px 18px;
+      padding: 12px 16px;
     }
 
-    .entry { padding: 5px 0; line-height: 1.6; }
-    .entry + .entry { border-top: 1px solid rgba(255,255,255,0.1); }
-    .translated .entry + .entry { border-top: 1px solid rgba(0,0,0,0.05); }
+    .panel-body::-webkit-scrollbar { width: 4px; }
+    .panel-body::-webkit-scrollbar-track { background: transparent; }
+    .panel-body::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
 
-    .entry-text { font-size: 14px; }
-    .original .entry-text { color: #fff; }
-    .translated .entry-text { color: #1a1a2e; }
-    .entry.interim .entry-text { opacity: 0.5; font-style: italic; }
+    .entry { padding: 6px 0; line-height: 1.6; }
+    .entry + .entry { border-top: 1px solid rgba(255,255,255,0.04); }
+
+    .entry-text { font-size: 14px; color: #d4d4d8; }
+    .original .entry-text { color: #d4d4d8; }
+    .translated .entry-text { color: #c4c5e0; }
+    .entry.interim .entry-text { opacity: 0.4; font-style: italic; }
 
     .empty-state {
       font-size: 13px;
       text-align: center;
-      padding: 36px 16px;
+      padding: 40px 16px;
+      color: #3f3f46;
     }
-    .original .empty-state { color: rgba(255,255,255,0.4); }
-    .translated .empty-state { color: rgba(0,0,0,0.25); }
-
-    /* Scrollbar styling */
-    .panel-body::-webkit-scrollbar { width: 5px; }
-    .panel-body::-webkit-scrollbar-track { background: transparent; }
-    .panel-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-    .translated .panel-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo-title">
-      <img src="logo.png" alt="Pinch" />
-      <h1>Pinch Real-Time Translation</h1>
-    </div>
-    <div class="subtitle">Speech-to-speech translation powered by Pinch API</div>
+  <div class="app">
+    <header>
+      <div class="logo-title">
+        <img src="logo.png" alt="Pinch" />
+        <h1>Pinch Real-Time Translation</h1>
+      </div>
+    </header>
+
     <div id="timer">00:00</div>
+
+    <div class="waveform-container">
+      <canvas id="waveCanvas"></canvas>
+      <span class="waveform-idle" id="waveLabel">Tap Connect to begin</span>
+    </div>
+
     <div class="controls">
       <button id="connectBtn">Connect</button>
       <button id="disconnectBtn" disabled>Disconnect</button>
       <button id="audioToggle" class="active" disabled>Audio On</button>
-      <span id="status">Not connected</span>
+      <span id="status"></span>
     </div>
-  </header>
 
-  <div class="waveform-section">
-    <canvas id="waveformCanvas"></canvas>
-  </div>
-
-  <div class="main-content">
     <div class="transcript-container">
       <div class="transcript-panel original">
-        <div class="panel-header">Original</div>
+        <div class="panel-header"><span class="header-dot"></span> Original</div>
         <div class="panel-body" id="originalPanel">
-          <div class="empty-state">Transcripts will appear here...</div>
+          <div class="empty-state">Your speech will appear here...</div>
         </div>
       </div>
       <div class="transcript-panel translated">
-        <div class="panel-header">Translated</div>
+        <div class="panel-header"><span class="header-dot"></span> Translated</div>
         <div class="panel-body" id="translatedPanel">
           <div class="empty-state">Translations will appear here...</div>
         </div>
@@ -243,13 +283,10 @@
     let timerInterval = null;
     let sessionStart = null;
     let audioEnabled = true;
-
-    // Waveform state
     let audioCtx = null;
     let analyser = null;
-    let waveformAnimId = null;
-    const waveformCanvas = document.getElementById("waveformCanvas");
-    const waveformCtx = waveformCanvas.getContext("2d");
+    let micStream = null;
+    let animFrameId = null;
 
     // DOM refs
     const connectBtn    = document.getElementById("connectBtn");
@@ -259,97 +296,96 @@
     const timerEl       = document.getElementById("timer");
     const originalPanel = document.getElementById("originalPanel");
     const translatedPanel = document.getElementById("translatedPanel");
+    const waveCanvas    = document.getElementById("waveCanvas");
+    const waveLabel     = document.getElementById("waveLabel");
+    const ctx           = waveCanvas.getContext("2d");
 
     // ---- Canvas sizing ----
-    function resizeCanvas() {
-      const rect = waveformCanvas.getBoundingClientRect();
-      waveformCanvas.width = rect.width * window.devicePixelRatio;
-      waveformCanvas.height = rect.height * window.devicePixelRatio;
-      waveformCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
-      drawFlatLine();
+    function sizeCanvas() {
+      const rect = waveCanvas.getBoundingClientRect();
+      waveCanvas.width = rect.width * devicePixelRatio;
+      waveCanvas.height = rect.height * devicePixelRatio;
+      ctx.scale(devicePixelRatio, devicePixelRatio);
     }
+    sizeCanvas();
+    window.addEventListener("resize", sizeCanvas);
 
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
+    // ---- Audio Visualizer ----
+    function startVisualizer() {
+      if (audioCtx) return;
+      audioCtx = new AudioContext();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      analyser.smoothingTimeConstant = 0.75;
 
-    // ---- Waveform drawing ----
-    function drawFlatLine() {
-      const w = waveformCanvas.getBoundingClientRect().width;
-      const h = waveformCanvas.getBoundingClientRect().height;
-      waveformCtx.clearRect(0, 0, w, h);
-      waveformCtx.beginPath();
-      waveformCtx.moveTo(0, h / 2);
-      waveformCtx.lineTo(w, h / 2);
-      waveformCtx.strokeStyle = "rgba(79, 137, 183, 0.25)";
-      waveformCtx.lineWidth = 2;
-      waveformCtx.stroke();
-    }
-
-    function drawWaveform() {
-      if (!analyser) return;
-
-      const bufferLength = analyser.fftSize;
-      const dataArray = new Uint8Array(bufferLength);
-      analyser.getByteTimeDomainData(dataArray);
-
-      const w = waveformCanvas.getBoundingClientRect().width;
-      const h = waveformCanvas.getBoundingClientRect().height;
-      waveformCtx.clearRect(0, 0, w, h);
-
-      waveformCtx.beginPath();
-      waveformCtx.lineWidth = 2.5;
-      waveformCtx.strokeStyle = "#4f89b7";
-
-      const sliceWidth = w / bufferLength;
-      let x = 0;
-
-      for (let i = 0; i < bufferLength; i++) {
-        const v = dataArray[i] / 128.0;
-        const y = (v * h) / 2;
-        if (i === 0) {
-          waveformCtx.moveTo(x, y);
-        } else {
-          waveformCtx.lineTo(x, y);
-        }
-        x += sliceWidth;
-      }
-
-      waveformCtx.lineTo(w, h / 2);
-      waveformCtx.stroke();
-
-      waveformAnimId = requestAnimationFrame(drawWaveform);
-    }
-
-    function startWaveform(mediaStream) {
-      try {
-        audioCtx = new AudioContext();
-        const source = audioCtx.createMediaStreamSource(mediaStream);
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 2048;
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        micStream = stream;
+        const source = audioCtx.createMediaStreamSource(stream);
         source.connect(analyser);
-        drawWaveform();
-      } catch (e) {
-        console.error("Waveform init failed:", e);
-      }
+        waveLabel.style.display = "none";
+        drawWave();
+      }).catch(() => {
+        waveLabel.textContent = "Mic unavailable";
+      });
     }
 
-    function stopWaveform() {
-      if (waveformAnimId) {
-        cancelAnimationFrame(waveformAnimId);
-        waveformAnimId = null;
+    function stopVisualizer() {
+      if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
+      if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+      if (audioCtx) { audioCtx.close(); audioCtx = null; analyser = null; }
+      // Clear canvas
+      const w = waveCanvas.getBoundingClientRect().width;
+      const h = waveCanvas.getBoundingClientRect().height;
+      ctx.clearRect(0, 0, w, h);
+      waveLabel.style.display = "";
+      waveLabel.textContent = "Tap Connect to begin";
+    }
+
+    function drawWave() {
+      if (!analyser) return;
+      animFrameId = requestAnimationFrame(drawWave);
+
+      const bufLen = analyser.frequencyBinCount;
+      const data = new Uint8Array(bufLen);
+      analyser.getByteFrequencyData(data);
+
+      const w = waveCanvas.getBoundingClientRect().width;
+      const h = waveCanvas.getBoundingClientRect().height;
+      ctx.clearRect(0, 0, w, h);
+
+      const barCount = 48;
+      const gap = 3;
+      const barWidth = (w - gap * (barCount - 1)) / barCount;
+      const step = Math.floor(bufLen / barCount);
+
+      for (let i = 0; i < barCount; i++) {
+        // Average a slice of frequency bins
+        let sum = 0;
+        for (let j = 0; j < step; j++) sum += data[i * step + j];
+        const avg = sum / step;
+
+        const barH = Math.max(2, (avg / 255) * h * 0.85);
+        const x = i * (barWidth + gap);
+        const y = (h - barH) / 2;
+
+        // Gradient from blue to purple based on position
+        const ratio = i / barCount;
+        const r = Math.round(79 + ratio * (139 - 79));
+        const g = Math.round(137 + ratio * (143 - 137));
+        const b = Math.round(183 + ratio * (208 - 183));
+
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.7)`;
+        ctx.beginPath();
+        ctx.roundRect(x, y, barWidth, barH, 2);
+        ctx.fill();
       }
-      if (audioCtx) {
-        audioCtx.close().catch(() => {});
-        audioCtx = null;
-        analyser = null;
-      }
-      drawFlatLine();
     }
 
     // ---- Timer ----
     function startTimer() {
       sessionStart = Date.now();
       timerEl.textContent = "00:00";
+      timerEl.classList.add("active");
       timerInterval = setInterval(() => {
         const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
         const m = String(Math.floor(elapsed / 60)).padStart(2, "0");
@@ -360,6 +396,7 @@
 
     function stopTimer() {
       if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      timerEl.classList.remove("active");
     }
 
     function setStatus(text, type) {
@@ -367,7 +404,7 @@
       statusEl.className = type || "";
     }
 
-    // Translated grouping state
+    // ---- Translated grouping state ----
     let originalFinalCount = 0;
     let translatedEntry = null;
     let translatedText = "";
@@ -488,7 +525,6 @@
       setStatus("Creating session...");
 
       try {
-        // 1. Create session via server
         const res = await fetch("/api/session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -501,7 +537,6 @@
 
         const { url, token } = await res.json();
 
-        // 2. Connect to LiveKit room
         setStatus("Connecting...");
         const r = new Room();
         room = r;
@@ -535,27 +570,14 @@
         });
 
         await r.connect(url, token);
-
-        // 3. Enable microphone
         await r.localParticipant.setMicrophoneEnabled(true);
 
-        // 4. Start waveform visualizer from the mic track
-        try {
-          const micTrack = r.localParticipant.getTrackPublication(Track.Source.Microphone);
-          if (micTrack && micTrack.track && micTrack.track.mediaStreamTrack) {
-            const stream = new MediaStream([micTrack.track.mediaStreamTrack]);
-            startWaveform(stream);
-          }
-        } catch (e) {
-          console.error("Could not start waveform:", e);
-        }
-
-        // 5. UI updates
         setStatus("Connected", "connected");
         disconnectBtn.disabled = false;
         audioToggle.disabled = false;
         clearPanels();
         startTimer();
+        startVisualizer();
       } catch (err) {
         console.error(err);
         setStatus("Error: " + err.message, "error");
@@ -566,7 +588,7 @@
     // ---- Disconnect ----
     function handleDisconnect() {
       stopTimer();
-      stopWaveform();
+      stopVisualizer();
       document.querySelectorAll("audio.translated-audio").forEach(el => {
         el.srcObject = null;
         el.remove();

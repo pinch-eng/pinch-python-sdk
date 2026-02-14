@@ -20,7 +20,7 @@ app.post("/api/session", async (req, res) => {
     const response = await fetch("https://api.startpinch.com/api/beta1/session", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer ${PINCH_API_KEY}",
+        "Authorization": `Bearer ${PINCH_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
