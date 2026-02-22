@@ -19,7 +19,7 @@ from importlib.metadata import version as _pkg_version
 try:
     __version__ = _pkg_version("pinch-sdk")
 except Exception:
-    __version__ = "0.1.1"
+    __version__ = "0.1.3"
 
 
 __all__ = [
