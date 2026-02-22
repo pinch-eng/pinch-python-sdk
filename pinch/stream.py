@@ -18,6 +18,7 @@ def _parse_transcript_payload(payload: Any) -> Optional[TranscriptEvent]:
     t = payload.get("type")
     text = payload.get("text")
     is_final = payload.get("is_final")
+    language_detected = payload.get("language_detected")
     if not isinstance(t, str) or not isinstance(text, str):
         return None
     if t == "original_transcript":
@@ -28,7 +29,15 @@ def _parse_transcript_payload(payload: Any) -> Optional[TranscriptEvent]:
         return None
     if is_final is not None and not isinstance(is_final, bool):
         is_final = None
-    return TranscriptEvent(kind=kind, text=text, is_final=is_final, raw=payload)
+    if language_detected is not None and not isinstance(language_detected, str):
+        language_detected = None
+    return TranscriptEvent(
+        kind=kind,
+        text=text,
+        is_final=is_final,
+        language_detected=language_detected,
+        raw=payload,
+    )
 
 
 class PinchStream:

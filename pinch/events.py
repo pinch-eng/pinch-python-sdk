@@ -20,6 +20,7 @@ class TranscriptEvent:
     kind: Literal["original", "translated"] = "original"
     text: str = ""
     is_final: Optional[bool] = None
+    language_detected: Optional[str] = None
     raw: Optional[dict[str, Any]] = None
 
 
