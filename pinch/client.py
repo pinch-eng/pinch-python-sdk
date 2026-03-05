@@ -40,7 +40,10 @@ class PinchClient:
             "sourceLanguage": params.source_language,
             "targetLanguage": params.target_language,
             "voiceType": params.voice_type,
+            "audioOutputEnabled": bool(params.audio_output_enabled),
         }
+        if params.model_name is not None:
+            body["modelName"] = params.model_name
 
         try:
             with httpx.Client(timeout=self._timeout_s) as client:

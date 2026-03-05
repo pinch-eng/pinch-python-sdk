@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Optional
 
 from .errors import PinchProtocolError, PinchValidationError
 
@@ -15,6 +15,7 @@ class SessionParams:
     target_language: str = "es-ES"
     voice_type: str = "clone"  # allowed: clone, male, female
     audio_output_enabled: bool = True
+    model_name: Optional[str] = None
 
     def validate(self) -> None:
         if self.voice_type not in _ALLOWED_VOICE_TYPES:
